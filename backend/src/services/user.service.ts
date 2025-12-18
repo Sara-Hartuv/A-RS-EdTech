@@ -1,106 +1,77 @@
-import { IUser } from '../models/user.model';
 import mongoose from 'mongoose';
+import { IUser } from '../models/user.model';
 import * as userRepository from '../repositories/user.repository';
+import { hashPassword } from '../utils/auth.utils';
 
-// GET - קבלת משתמש לפי ID
-export const getUserById = async (userId: string): Promise<IUser | null> => {
-  if (!mongoose.Types.ObjectId.isValid(userId)) {
-    throw new Error('Invalid user ID');
-  }
+export const getUserById = async (userId: string): Promise<IUser> => {
+  if (!mongoose.Types.ObjectId.isValid(userId)) throw new Error('Invalid user ID');
   
   const user = await userRepository.findUserById(userId);
-  
-  if (!user) {
-    throw new Error('User not found');
-  }
+  if (!user) throw new Error('User not found');
   
   return user;
 };
 
-// GET - קבלת כל המשתמשים
 export const getAllUsers = async (): Promise<IUser[]> => {
-  const users = await userRepository.findAllUsers();
-  return users;
+  return await userRepository.findAllUsers();
 };
 
-// GET - קבלת משתמשים פעילים בלבד
+// src/services/user.service.ts
+
 export const getActiveUsers = async (): Promise<IUser[]> => {
-  const users = await userRepository.findUsersByQuery({ status: true });
-  return users;
+  return await userRepository.findActiveUsers();
 };
 
-// POST - יצירת משתמש חדש
-export const createUser = async (userData: Partial<IUser>): Promise<IUser> => {
-  // בדיקת קיום משתמש עם אותו מספר טלפון
-  const existingUser = await userRepository.findUserByPhone(userData.phone!);
-  
-  if (existingUser) {
-    throw new Error('User with this phone number already exists');
-  }
 
-  // וולידציה על השדות הנדרשים
-  if (!userData.name || !userData.phone || !userData.passwordHash || !userData.role) {
-    throw new Error('Missing required fields');
-  }
 
-  const newUser = await userRepository.createNewUser(userData);
-  return newUser;
+/**
+ * יצירת משתמש אדמיניסטרטיבית (למשל דרך דשבורד מנהל)
+ * הערה: זה די דומה ל-register, אבל מחזיר רק את המשתמש בלי טוקן
+ */
+export const createUserByAdmin = async (userData: any): Promise<IUser> => {
+   // כאן אפשר להשתמש בפונקציית ה-register מה-auth service 
+   // או לשכפל את הלוגיקה אם רוצים התנהגות שונה
+   // לצורך הפשטות, מומלץ לקרוא ל-authService.register
+   throw new Error("Use authService.register instead"); 
 };
 
-// PUT - עדכון משתמש לפי ID
 export const updateUser = async (
   userId: string,
-  updateData: Partial<IUser>
-): Promise<IUser | null> => {
-  if (!mongoose.Types.ObjectId.isValid(userId)) {
-    throw new Error('Invalid user ID');
+  updateData: Partial<IUser> & { password?: string } // מאפשרים לקבל סיסמה כטקסט
+): Promise<IUser> => {
+  if (!mongoose.Types.ObjectId.isValid(userId)) throw new Error('Invalid user ID');
+
+  // מונעים עדכון ישיר של ה-Hash מבחוץ
+  if ('passwordHash' in updateData) {
+    delete updateData.passwordHash;
   }
 
-  // אם מעדכנים טלפון, לוודא שהוא לא קיים אצל משתמש אחר
+  // אם התקבלה סיסמה חדשה, מצפינים אותה ושמים בשדה הנכון
+  if (updateData.password) {
+    updateData.passwordHash = await hashPassword(updateData.password);
+    delete updateData.password; // מוחקים את הסיסמה הגלויה
+  }
+
+  // בדיקה שאין כפילות טלפון במקרה של עדכון טלפון
   if (updateData.phone) {
     const existingUser = await userRepository.findUserByPhone(updateData.phone);
+    // מוודאים שזה לא אותו משתמש שאנחנו מעדכנים כרגע
     if (existingUser && existingUser.id !== userId) {
       throw new Error('Phone number already in use by another user');
     }
   }
 
   const updatedUser = await userRepository.updateUserById(userId, updateData);
-  
-  if (!updatedUser) {
-    throw new Error('User not found');
-  }
+  if (!updatedUser) throw new Error('User not found');
 
   return updatedUser;
 };
 
-// DELETE - מחיקה רכה (שינוי סטטוס ללא פעיל)
-export const deleteUser = async (userId: string): Promise<IUser | null> => {
-  if (!mongoose.Types.ObjectId.isValid(userId)) {
-    throw new Error('Invalid user ID');
-  }
-
-  const deletedUser = await userRepository.updateUserById(userId, { status: false });
-  
-  if (!deletedUser) {
-    throw new Error('User not found');
-  }
-
-  return deletedUser;
-};
-
-// DELETE - מחיקה קשה (מחיקה פיזית מהDB)
-export const hardDeleteUser = async (userId: string): Promise<IUser | null> => {
-  if (!mongoose.Types.ObjectId.isValid(userId)) {
-    throw new Error('Invalid user ID');
-  }
+export const deleteUser = async (userId: string): Promise<IUser> => {
+  if (!mongoose.Types.ObjectId.isValid(userId)) throw new Error('Invalid user ID');
 
   const deletedUser = await userRepository.deleteUserById(userId);
-  
-  if (!deletedUser) {
-    throw new Error('User not found');
-  }
+  if (!deletedUser) throw new Error('User not found');
 
   return deletedUser;
 };
-
-

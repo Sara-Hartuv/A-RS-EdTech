@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import * as orderService from '../services/order.service';
 
-// GET - קבלת הזמנה לפי ID
 export const getOrderById = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
@@ -12,7 +11,6 @@ export const getOrderById = async (req: Request, res: Response): Promise<void> =
   }
 };
 
-// GET - קבלת כל ההזמנות
 export const getAllOrders = async (req: Request, res: Response): Promise<void> => {
   try {
     const orders = await orderService.getAllOrders();
@@ -22,7 +20,6 @@ export const getAllOrders = async (req: Request, res: Response): Promise<void> =
   }
 };
 
-// GET - קבלת הזמנות לפי סטטוס
 export const getOrdersByStatus = async (req: Request, res: Response): Promise<void> => {
   try {
     const { status } = req.params;
@@ -33,7 +30,6 @@ export const getOrdersByStatus = async (req: Request, res: Response): Promise<vo
   }
 };
 
-// GET - קבלת הזמנות לפי סטודנט
 export const getOrdersByStudent = async (req: Request, res: Response): Promise<void> => {
   try {
     const { studentId } = req.params;
@@ -44,7 +40,6 @@ export const getOrdersByStudent = async (req: Request, res: Response): Promise<v
   }
 };
 
-// GET - קבלת הזמנות ממתינות
 export const getPendingOrders = async (req: Request, res: Response): Promise<void> => {
   try {
     const orders = await orderService.getPendingOrders();
@@ -54,7 +49,6 @@ export const getPendingOrders = async (req: Request, res: Response): Promise<voi
   }
 };
 
-// POST - יצירת הזמנה חדשה
 export const createOrder = async (req: Request, res: Response): Promise<void> => {
   try {
     const orderData = req.body;
@@ -65,7 +59,6 @@ export const createOrder = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
-// PUT - עדכון הזמנה
 export const updateOrder = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
@@ -77,7 +70,6 @@ export const updateOrder = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
-// PUT - שינוי סטטוס הזמנה
 export const updateOrderStatus = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
@@ -89,7 +81,6 @@ export const updateOrderStatus = async (req: Request, res: Response): Promise<vo
   }
 };
 
-// PUT - סימון הזמנה כנמסרה
 export const markOrderAsDelivered = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;

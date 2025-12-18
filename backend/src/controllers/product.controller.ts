@@ -11,7 +11,6 @@ export const getProductById = async (req: Request, res: Response): Promise<void>
   }
 };
 
-// GET - קבלת כל המוצרים
 export const getAllProducts = async (req: Request, res: Response): Promise<void> => {
   try {
     const products = await productService.getAllProducts();
@@ -21,7 +20,6 @@ export const getAllProducts = async (req: Request, res: Response): Promise<void>
   }
 };
 
-// GET - קבלת מוצרים לפי קטגוריה
 export const getProductsByCategory = async (req: Request, res: Response): Promise<void> => {
   try {
     const { categoryId } = req.params;
@@ -32,7 +30,6 @@ export const getProductsByCategory = async (req: Request, res: Response): Promis
   }
 };
 
-// GET - קבלת מוצרים זמינים
 export const getAvailableProducts = async (req: Request, res: Response): Promise<void> => {
   try {
     const products = await productService.getAvailableProducts();
@@ -42,7 +39,6 @@ export const getAvailableProducts = async (req: Request, res: Response): Promise
   }
 };
 
-// POST - יצירת מוצר חדש
 export const createProduct = async (req: Request, res: Response): Promise<void> => {
   try {
     const productData = req.body;
@@ -53,7 +49,6 @@ export const createProduct = async (req: Request, res: Response): Promise<void> 
   }
 };
 
-// PUT - עדכון מוצר
 export const updateProduct = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
@@ -65,7 +60,6 @@ export const updateProduct = async (req: Request, res: Response): Promise<void> 
   }
 };
 
-// PUT - עדכון מלאי מוצר
 export const updateProductStock = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
@@ -77,7 +71,6 @@ export const updateProductStock = async (req: Request, res: Response): Promise<v
   }
 };
 
-// DELETE - מחיקת מוצר
 export const deleteProduct = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;

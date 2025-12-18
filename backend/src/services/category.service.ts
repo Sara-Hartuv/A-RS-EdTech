@@ -2,7 +2,7 @@ import { ICategory } from '../models/category.model';
 import mongoose from 'mongoose';
 import * as categoryRepository from '../repositories/category.repository';
 
-// GET - קבלת קטגוריה לפי ID
+// GET - get category by ID
 export const getCategoryById = async (categoryId: string): Promise<ICategory | null> => {
   if (!mongoose.Types.ObjectId.isValid(categoryId)) {
     throw new Error('Invalid category ID');
@@ -17,15 +17,15 @@ export const getCategoryById = async (categoryId: string): Promise<ICategory | n
   return category;
 };
 
-// GET - קבלת כל הקטגוריות
+// GET - get all categories
 export const getAllCategories = async (): Promise<ICategory[]> => {
   const categories = await categoryRepository.findAllCategories();
   return categories;
 };
 
-// POST - יצירת קטגוריה חדשה
+// POST - create new category
 export const createCategory = async (categoryData: Partial<ICategory>): Promise<ICategory> => {
-  // בדיקת קיום קטגוריה עם אותו שם
+  // Check if category with same name exists
   if (categoryData.name) {
     const existingCategory = await categoryRepository.findCategoryByName(categoryData.name);
     
@@ -34,7 +34,7 @@ export const createCategory = async (categoryData: Partial<ICategory>): Promise<
     }
   }
 
-  // וולידציה על השדות הנדרשים
+  // Validate required fields
   if (!categoryData.name) {
     throw new Error('Category name is required');
   }
@@ -43,7 +43,7 @@ export const createCategory = async (categoryData: Partial<ICategory>): Promise<
   return newCategory;
 };
 
-// PUT - עדכון קטגוריה לפי ID
+// PUT - update category by ID
 export const updateCategory = async (
   categoryId: string,
   updateData: Partial<ICategory>
@@ -52,7 +52,7 @@ export const updateCategory = async (
     throw new Error('Invalid category ID');
   }
 
-  // אם מעדכנים שם, לוודא שהוא לא קיים אצל קטגוריה אחרת
+  // If updating name, ensure it doesn't exist in another category
   if (updateData.name) {
     const existingCategory = await categoryRepository.findCategoryByName(updateData.name);
     if (existingCategory && existingCategory.id !== categoryId) {
@@ -69,7 +69,7 @@ export const updateCategory = async (
   return updatedCategory;
 };
 
-// DELETE - מחיקת קטגוריה
+// DELETE - delete category
 export const deleteCategory = async (categoryId: string): Promise<ICategory | null> => {
   if (!mongoose.Types.ObjectId.isValid(categoryId)) {
     throw new Error('Invalid category ID');

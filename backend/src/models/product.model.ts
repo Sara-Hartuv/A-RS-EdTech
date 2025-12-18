@@ -8,7 +8,7 @@ export interface IProduct extends Document {
   costInVouchers: number;
   stock: number;
   purchasesCount: number;
-  isActive: boolean;
+  status: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -53,7 +53,7 @@ const ProductSchema = new mongoose.Schema<IProduct>(
       type: Number,
       default: 0
     },
-    isActive: {
+    status: {
       type: Boolean,
       default: true
     }

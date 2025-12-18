@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import * as categoryService from '../services/category.service';
 
-// GET - קבלת קטגוריה לפי ID
 export const getCategoryById = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
@@ -12,7 +11,6 @@ export const getCategoryById = async (req: Request, res: Response): Promise<void
   }
 };
 
-// GET - קבלת כל הקטגוריות
 export const getAllCategories = async (req: Request, res: Response): Promise<void> => {
   try {
     const categories = await categoryService.getAllCategories();
@@ -22,7 +20,6 @@ export const getAllCategories = async (req: Request, res: Response): Promise<voi
   }
 };
 
-// POST - יצירת קטגוריה חדשה
 export const createCategory = async (req: Request, res: Response): Promise<void> => {
   try {
     const categoryData = req.body;
@@ -33,7 +30,6 @@ export const createCategory = async (req: Request, res: Response): Promise<void>
   }
 };
 
-// PUT - עדכון קטגוריה
 export const updateCategory = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
@@ -45,7 +41,6 @@ export const updateCategory = async (req: Request, res: Response): Promise<void>
   }
 };
 
-// DELETE - מחיקת קטגוריה
 export const deleteCategory = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;

@@ -1,19 +1,27 @@
 import Order, { IOrder } from '../models/order.model';
 
 export const findOrderById = async (orderId: string): Promise<IOrder | null> => {
-  return await Order.findById(orderId).populate('student').populate('product');
+  return await Order.findById(orderId)
+    .populate('student')
+    .populate('items.product');
 };
 
 export const findAllOrders = async (): Promise<IOrder[]> => {
-  return await Order.find().populate('student').populate('product');
+  return await Order.find()
+    .populate('student')
+    .populate('items.product');
 };
 
 export const findOrdersByQuery = async (query: any): Promise<IOrder[]> => {
-  return await Order.find(query).populate('student').populate('product');
+  return await Order.find(query)
+    .populate('student')
+    .populate('items.product');
 };
 
 export const findOrdersByStudent = async (studentId: string): Promise<IOrder[]> => {
-  return await Order.find({ student: studentId }).populate('student').populate('product');
+  return await Order.find({ student: studentId })
+    .populate('student')
+    .populate('items.product');
 };
 
 export const createNewOrder = async (orderData: Partial<IOrder>): Promise<IOrder> => {
@@ -29,7 +37,9 @@ export const updateOrderById = async (
     orderId,
     { $set: updateData },
     { new: true, runValidators: true }
-  ).populate('student').populate('product');
+  )
+    .populate('student')
+    .populate('items.product');
 };
 
 

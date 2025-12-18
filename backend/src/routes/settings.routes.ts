@@ -9,7 +9,6 @@ router.get('/', settingsController.getSettings);
 // PUT routes
 router.put('/', settingsController.updateSettings);
 router.put('/redeem', settingsController.toggleRedeemStatus);
-router.put('/maintenance', settingsController.toggleMaintenanceMode);
 router.put('/kiosk', settingsController.updateKioskInfo);
 router.put('/rules', settingsController.updatePurchaseRules);
 

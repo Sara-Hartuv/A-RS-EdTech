@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import * as ideaService from '../services/idea.service';
 
-// GET - קבלת רעיון לפי ID
 export const getIdeaById = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
@@ -12,7 +11,6 @@ export const getIdeaById = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
-// GET - קבלת כל הרעיונות
 export const getAllIdeas = async (req: Request, res: Response): Promise<void> => {
   try {
     const ideas = await ideaService.getAllIdeas();
@@ -22,7 +20,6 @@ export const getAllIdeas = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
-// GET - קבלת רעיונות לפי סטטוס
 export const getIdeasByStatus = async (req: Request, res: Response): Promise<void> => {
   try {
     const { status } = req.params;
@@ -33,7 +30,6 @@ export const getIdeasByStatus = async (req: Request, res: Response): Promise<voi
   }
 };
 
-// GET - קבלת רעיונות לפי סטודנט
 export const getIdeasByStudent = async (req: Request, res: Response): Promise<void> => {
   try {
     const { studentId } = req.params;
@@ -44,7 +40,6 @@ export const getIdeasByStudent = async (req: Request, res: Response): Promise<vo
   }
 };
 
-// GET - קבלת רעיונות שלא נצפו
 export const getUnseenIdeas = async (req: Request, res: Response): Promise<void> => {
   try {
     const ideas = await ideaService.getUnseenIdeas();
@@ -54,7 +49,6 @@ export const getUnseenIdeas = async (req: Request, res: Response): Promise<void>
   }
 };
 
-// POST - יצירת רעיון חדש
 export const createIdea = async (req: Request, res: Response): Promise<void> => {
   try {
     const ideaData = req.body;
@@ -65,7 +59,6 @@ export const createIdea = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-// PUT - עדכון רעיון
 export const updateIdea = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
@@ -77,7 +70,6 @@ export const updateIdea = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-// PUT - סימון רעיון כנצפה
 export const markIdeaAsSeen = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
@@ -88,7 +80,6 @@ export const markIdeaAsSeen = async (req: Request, res: Response): Promise<void>
   }
 };
 
-// DELETE - מחיקת רעיון
 export const deleteIdea = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;

@@ -6,7 +6,7 @@ export interface ISettings extends Document {
   isRedeemOpen: boolean;
   kioskInfo: string;
   purchaseRules: string[];
-  maintenanceMode: boolean;
+  pointsPerVoucher: number;
 }
 
 const SettingsSchema = new mongoose.Schema<ISettings>(
@@ -36,9 +36,11 @@ const SettingsSchema = new mongoose.Schema<ISettings>(
       default: []
     },
 
-    maintenanceMode: {
-      type: Boolean,
-      default: false
+    pointsPerVoucher: {
+      type: Number,
+      required: true,
+      default: 100,
+      min: [1, 'Points per voucher must be at least 1']
     }
   },
 

@@ -2,7 +2,7 @@ import mongoose, { Document } from "mongoose";
 
 export interface ICategory extends Document {
   name: string;
-  inActive?: boolean;
+  status?: boolean;
 }
 
 const CategorySchema = new mongoose.Schema<ICategory>(
@@ -12,9 +12,9 @@ const CategorySchema = new mongoose.Schema<ICategory>(
       required: true,
       trim: true
     },
-    inActive: {
+    status: {
       type: Boolean,
-      default: false
+      default: true
     }
   },
   { timestamps: true }

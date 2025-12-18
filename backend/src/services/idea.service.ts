@@ -2,7 +2,7 @@ import { IIdea } from '../models/idea.model';
 import mongoose from 'mongoose';
 import * as ideaRepository from '../repositories/idea.repository';
 
-// GET - קבלת רעיון לפי ID
+// GET - get idea by ID
 export const getIdeaById = async (ideaId: string): Promise<IIdea | null> => {
   if (!mongoose.Types.ObjectId.isValid(ideaId)) {
     throw new Error('Invalid idea ID');
@@ -17,19 +17,19 @@ export const getIdeaById = async (ideaId: string): Promise<IIdea | null> => {
   return idea;
 };
 
-// GET - קבלת כל הרעיונות
+// GET - get all ideas
 export const getAllIdeas = async (): Promise<IIdea[]> => {
   const ideas = await ideaRepository.findAllIdeas();
   return ideas;
 };
 
-// GET - קבלת רעיונות לפי סטטוס
+// GET - get ideas by status
 export const getIdeasByStatus = async (status: string): Promise<IIdea[]> => {
   const ideas = await ideaRepository.findIdeasByQuery({ status });
   return ideas;
 };
 
-// GET - קבלת רעיונות לפי סטודנט
+// GET - get ideas by student
 export const getIdeasByStudent = async (studentId: string): Promise<IIdea[]> => {
   if (!mongoose.Types.ObjectId.isValid(studentId)) {
     throw new Error('Invalid student ID');
@@ -39,15 +39,15 @@ export const getIdeasByStudent = async (studentId: string): Promise<IIdea[]> => 
   return ideas;
 };
 
-// GET - קבלת רעיונות שלא נצפו
+// GET - get unseen ideas
 export const getUnseenIdeas = async (): Promise<IIdea[]> => {
   const ideas = await ideaRepository.findIdeasByQuery({ seen: false });
   return ideas;
 };
 
-// POST - יצירת רעיון חדש
+// POST - create new idea
 export const createIdea = async (ideaData: Partial<IIdea>): Promise<IIdea> => {
-  // וולידציה על השדות הנדרשים
+  // Validate required fields
   if (!ideaData.student || !ideaData.text) {
     throw new Error('Student and text are required');
   }
@@ -60,7 +60,7 @@ export const createIdea = async (ideaData: Partial<IIdea>): Promise<IIdea> => {
   return newIdea;
 };
 
-// PUT - עדכון רעיון לפי ID
+// PUT - update idea by ID
 export const updateIdea = async (
   ideaId: string,
   updateData: Partial<IIdea>
@@ -78,7 +78,7 @@ export const updateIdea = async (
   return updatedIdea;
 };
 
-// PUT - סימון רעיון כנצפה
+// PUT - mark idea as seen
 export const markIdeaAsSeen = async (ideaId: string): Promise<IIdea | null> => {
   if (!mongoose.Types.ObjectId.isValid(ideaId)) {
     throw new Error('Invalid idea ID');
@@ -93,7 +93,7 @@ export const markIdeaAsSeen = async (ideaId: string): Promise<IIdea | null> => {
   return updatedIdea;
 };
 
-// DELETE - מחיקת רעיון
+// DELETE - delete idea
 export const deleteIdea = async (ideaId: string): Promise<IIdea | null> => {
   if (!mongoose.Types.ObjectId.isValid(ideaId)) {
     throw new Error('Invalid idea ID');

@@ -9,7 +9,7 @@ export const createSettings = async (settingsData: Partial<ISettings>): Promise<
   return await newSettings.save();
 };
 
-// עדכון הגדרות
+// Update settings
 export const updateSettings = async (updateData: Partial<ISettings>): Promise<ISettings | null> => {
   return await Settings.findOneAndUpdate(
     {},
@@ -18,7 +18,7 @@ export const updateSettings = async (updateData: Partial<ISettings>): Promise<IS
   );
 };
 
-// מחיקת הגדרות (בדרך כלל לא נעשה שימוש)
+// Delete settings (usually not used)
 export const deleteSettings = async (): Promise<ISettings | null> => {
   return await Settings.findOneAndDelete();
 };

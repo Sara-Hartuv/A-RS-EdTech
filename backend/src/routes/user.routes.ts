@@ -1,21 +1,19 @@
 import { Router } from 'express';
 import * as userController from '../controllers/user.controller';
+import { authenticate, authorize } from '../middlewares/auth.middleware';
 
 const router = Router();
 
-// GET routes
-router.get('/', userController.getAllUsers);
-router.get('/active', userController.getActiveUsers);
-router.get('/:id', userController.getUserById);
+router.use(authenticate);
 
-// POST routes
-router.post('/', userController.createUser);
+router.get('/me', userController.getCurrentUser);
 
-// PUT routes
-router.put('/:id', userController.updateUser);
+router.get('/', authorize('admin'), userController.getAllUsers);
+router.get('/active', authorize('admin', 'teacher'), userController.getActiveUsers);
+router.post('/', authorize('admin'), userController.createUser); // יצירת יוזר ע"י אדמין
 
-// DELETE routes
-router.delete('/:id', userController.deleteUser);
-router.delete('/:id/hard', userController.hardDeleteUser);
+router.get('/:id', authorize('admin'), userController.getUserById);
+router.put('/:id', authorize('admin', 'teacher'), userController.updateUser);
+router.delete('/:id', authorize('admin'), userController.deleteUser);
 
 export default router;

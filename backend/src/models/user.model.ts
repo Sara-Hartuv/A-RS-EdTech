@@ -1,81 +1,44 @@
 import mongoose, { Document } from 'mongoose';
 
+/**
+ * Interfaces
+ */
 export interface IUser extends Document {
   name: string;
   phone: string;
   passwordHash: string;
   role: 'teacher' | 'student' | 'admin';
-  students: mongoose.Types.ObjectId[];
-  points: number;
-  vouchers: number;
-  bubbleVouchers: number;
-  comments?: string;  
   status: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
+// Base schema options: single collection 'users' and discriminator key 'role'
+const baseOptions = { 
+  discriminatorKey: 'role', 
+  collection: 'users', 
+  timestamps: true 
+} as any;
+
+/**
+ * Schema Definition
+ */
 const UserSchema = new mongoose.Schema<IUser>(
   {
-    name: {
-      type: String,
-      required: true,
-      trim: true
-    },
-
-    phone: {
-      type: String,
-      required: true,
-      unique: true,
-      lowercase: true,
-      trim: true
-    },
-
-    passwordHash: {
-      type: String,
-      required: true
-    },
-
-    role: {
-      type: String,
-      enum: ["teacher", "student", "admin"],
-      required: true
-    },
-
-    students: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User" 
-      }
-    ],
-
-    points: {
-      type: Number,
-      default: 0
-    },
-
-    vouchers: {
-      type: Number,
-      default: 0
-    },
-    bubbleVouchers: {
-      type: Number,
-      default: 0
-    },
-    comments: {
-      type: String,
-      trim: true
-    },
-
-    status: {
-      type: Boolean,
-      default: true
-    }
+    name: { type: String, required: true, trim: true },
+    phone: { type: String, required: true, unique: true, trim: true },
+    passwordHash: { type: String, required: true, select: false },
+    role: { type: String, enum: ['teacher', 'student', 'admin'], required: true },
+    status: { type: Boolean, default: true }
   },
-
-  { timestamps: true }
+  baseOptions
 );
 
-const User = mongoose.model<IUser>("User", UserSchema);
+UserSchema.index({ role: 1, status: 1 });
+
+/**
+ * Base Model Export
+ */
+const User = mongoose.model<IUser>('User', UserSchema);
 
 export default User;

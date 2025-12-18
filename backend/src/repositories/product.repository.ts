@@ -36,7 +36,7 @@ export const updateProductById = async (
   ).populate('category');
 };
 
-// מחיקת מוצר
+// Delete product
 export const deleteProductById = async (productId: string): Promise<IProduct | null> => {
   return await Product.findByIdAndUpdate(
     productId,

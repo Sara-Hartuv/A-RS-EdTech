@@ -2,7 +2,7 @@ import { IProduct } from '../models/product.model';
 import mongoose from 'mongoose';
 import * as productRepository from '../repositories/product.repository';
 
-// GET - קבלת מוצר לפי ID
+// GET - get product by ID
 export const getProductById = async (productId: string): Promise<IProduct | null> => {
   if (!mongoose.Types.ObjectId.isValid(productId)) {
     throw new Error('Invalid product ID');
@@ -17,13 +17,13 @@ export const getProductById = async (productId: string): Promise<IProduct | null
   return product;
 };
 
-// GET - קבלת כל המוצרים
+// GET - get all products
 export const getAllProducts = async (): Promise<IProduct[]> => {
   const products = await productRepository.findAllProducts();
   return products;
 };
 
-// GET - קבלת מוצרים לפי קטגוריה
+// GET - get products by category
 export const getProductsByCategory = async (categoryId: string): Promise<IProduct[]> => {
   if (!mongoose.Types.ObjectId.isValid(categoryId)) {
     throw new Error('Invalid category ID');
@@ -33,15 +33,15 @@ export const getProductsByCategory = async (categoryId: string): Promise<IProduc
   return products;
 };
 
-// GET - קבלת מוצרים זמינים במלאי
+// GET - get available products in stock
 export const getAvailableProducts = async (): Promise<IProduct[]> => {
   const products = await productRepository.findProductsByQuery({ stock: { $gt: 0 } });
   return products;
 };
 
-// POST - יצירת מוצר חדש
+// POST - create new product
 export const createProduct = async (productData: Partial<IProduct>): Promise<IProduct> => {
-  // בדיקת קיום מוצר עם אותו שם
+  // Check if product with same name exists
   if (productData.name) {
     const existingProduct = await productRepository.findProductByName(productData.name);
     
@@ -50,7 +50,7 @@ export const createProduct = async (productData: Partial<IProduct>): Promise<IPr
     }
   }
 
-  // וולידציה על השדות הנדרשים
+  // Validate required fields
   if (!productData.name || !productData.category || !productData.costInVouchers || productData.stock === undefined) {
     throw new Error('Name, category, costInVouchers, and stock are required');
   }
@@ -71,7 +71,7 @@ export const createProduct = async (productData: Partial<IProduct>): Promise<IPr
   return newProduct;
 };
 
-// PUT - עדכון מוצר לפי ID
+// PUT - update product by ID
 export const updateProduct = async (
   productId: string,
   updateData: Partial<IProduct>
@@ -80,7 +80,7 @@ export const updateProduct = async (
     throw new Error('Invalid product ID');
   }
 
-  // אם מעדכנים שם, לוודא שהוא לא קיים אצל מוצר אחר
+  // If updating name, ensure it doesn't exist in another product
   if (updateData.name) {
     const existingProduct = await productRepository.findProductByName(updateData.name);
     if (existingProduct && existingProduct.id !== productId) {
@@ -88,7 +88,7 @@ export const updateProduct = async (
     }
   }
 
-  // וולידציה על ערכים
+  // Validate values
   if (updateData.costInVouchers && updateData.costInVouchers < 1) {
     throw new Error('Cost must be at least 1 voucher');
   }
@@ -106,7 +106,7 @@ export const updateProduct = async (
   return updatedProduct;
 };
 
-// PUT - עדכון מלאי מוצר
+// PUT - update product stock
 export const updateProductStock = async (
   productId: string,
   quantity: number
@@ -121,7 +121,7 @@ export const updateProductStock = async (
     throw new Error('Product not found');
   }
 
-  // בדיקה שהמלאי לא יירד מתחת ל-0
+  // Check that stock doesn't go below 0
   if (product.stock + quantity < 0) {
     throw new Error('Insufficient stock');
   }
@@ -130,7 +130,7 @@ export const updateProductStock = async (
   return updatedProduct;
 };
 
-// DELETE - מחיקת מוצר
+// DELETE - delete product
 export const deleteProduct = async (productId: string): Promise<IProduct | null> => {
   if (!mongoose.Types.ObjectId.isValid(productId)) {
     throw new Error('Invalid product ID');
