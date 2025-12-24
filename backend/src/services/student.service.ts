@@ -43,15 +43,16 @@ export const addWeeklyPoints = async (studentId: string, points: number): Promis
     throw new Error('Invalid student ID');
   }
 
-  // כאן אפשר להוסיף לוגיקה עתידית: למשל, אם הנקודות שליליות - לוודא שלא יורדים מתחת לאפס
+  // This function is deprecated - weekly points are no longer stored on student
+  // Points are tracked through WeeklyPointsLog only
   
-  const updatedStudent = await studentRepository.updateStudentWeeklyPoints(studentId, points);
+  const student = await studentRepository.findStudentById(studentId);
 
-  if (!updatedStudent) {
+  if (!student) {
     throw new Error('Student not found or update failed');
   }
 
-  return updatedStudent;
+  return student;
 };
 
 /**

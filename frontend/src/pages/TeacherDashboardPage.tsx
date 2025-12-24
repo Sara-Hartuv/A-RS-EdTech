@@ -192,13 +192,13 @@ export default function TeacherDashboardPage() {
   };
 
   // Handle weekly points submission
-  const handleWeeklyPointsSubmit = async (points: number) => {
+  const handleWeeklyPointsSubmit = async (points: number, hasVoucher: boolean) => {
     if (!selectedStudent) return;
 
     try {
       if (existingLog) {
         // Update existing log
-        await teacherApi.updateWeeklyPointsLog(existingLog._id, { points });
+        await teacherApi.updateWeeklyPointsLog(existingLog._id, { points, hasVoucher });
       } else {
         // Create new log
         const weekStartDate = getWeekStartDate();
@@ -206,6 +206,7 @@ export default function TeacherDashboardPage() {
           student: selectedStudent._id,
           points,
           weekStartDate: weekStartDate.toISOString(),
+          hasVoucher,
         });
       }
 
@@ -345,6 +346,7 @@ export default function TeacherDashboardPage() {
         onSubmit={handleWeeklyPointsSubmit}
         studentName={selectedStudent?.name || ''}
         existingPoints={existingLog?.points}
+        existingHasVoucher={existingLog?.hasVoucher}
       />
     </div>
   );

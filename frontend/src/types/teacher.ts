@@ -7,7 +7,6 @@ export interface Student {
   role: 'student';
   status: boolean;
   currentVouchersCount?: number;
-  currentWeeklyPoints?: number;
   excellenceCertificatesCount?: number;
   createdAt?: string;
   updatedAt?: string;
@@ -19,6 +18,7 @@ export interface WeeklyPointsLog {
   points: number;
   weekStartDate: string;
   approvedBy: string | { _id: string; name: string };
+  hasVoucher: boolean;
   createdAt: string;
   updatedAt: string;
 }

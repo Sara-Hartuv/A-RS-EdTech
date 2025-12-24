@@ -5,7 +5,7 @@ import { ShoppingCart } from "lucide-react";
 import { getAllProducts } from "../api/products.api";
 import type { Product } from "../types/product";
 import ProductCard from "../components/products/ProductCard";
-import { useCartStore } from "../store/useCartStore";
+import { useCartStore } from "../store/CartStore";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -13,7 +13,8 @@ export default function ProductsPage() {
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const { addItem, totalItems } = useCartStore();
+  const { addItem, getTotalItems } = useCartStore();
+  const totalItems = getTotalItems();
   const navigate = useNavigate();
 
   useEffect(() => {

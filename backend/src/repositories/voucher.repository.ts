@@ -111,3 +111,18 @@ export const markVoucherAsRedeemed = async (
 export const deleteVoucherById = async (voucherId: string): Promise<IVoucher | null> => {
   return await Voucher.findByIdAndDelete(voucherId);
 };
+
+export const findVoucherByStudentAndWeek = async (
+  studentId: string,
+  weekStartDate: Date,
+  weekEndDate: Date
+): Promise<IVoucher | null> => {
+  return await Voucher.findOne({
+    student: studentId,
+    createdAt: { $gte: weekStartDate, $lt: weekEndDate }
+  })
+    .populate('issuedBy', 'name phone role')
+    .populate('period')
+    .populate('approvedBy', 'name phone role')
+    .sort({ createdAt: -1 });
+};

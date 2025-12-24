@@ -97,12 +97,6 @@ export default function StudentCard({
         <div className="hidden lg:flex items-center gap-4 text-xs text-slate-500">
           <div className="text-center">
             <span className="block font-semibold text-slate-700">
-              {student.currentWeeklyPoints || 0}
-            </span>
-            <span>נקודות כללי</span>
-          </div>
-          <div className="text-center">
-            <span className="block font-semibold text-slate-700">
               {student.currentVouchersCount || 0}
             </span>
             <span>שוברים</span>

@@ -55,9 +55,8 @@ export const register = async (userData: {
         passwordHash,
         role: 'student',
         status: true,
-        // איתחול שדות ספציפיים לתלמיד
+        // Student-specific field initialization
         currentVouchersCount: 0,
-        currentWeeklyPoints: 0,
         excellenceCertificatesCount: 0,
       });
       break;

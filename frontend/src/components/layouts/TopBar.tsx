@@ -25,9 +25,9 @@ export default function TopBar() {
             <img 
               src={logo} 
               alt="מייתרים - תוכנית עיצוב התנהגות" 
-              className="h-14 w-auto object-contain transition-transform group-hover:scale-105"
+              className="h-32 w-auto -mt-10 object-contain transition-transform group-hover:scale-105"
             />
-            <p className="text-[10px] text-slate-600 font-medium mt-0.5">תוכנית עיצוב התנהגות</p>
+            <p className="text-[10px] text-slate-600 font-medium -mt-6">תוכנית עיצוב התנהגות</p>
           </Link>
 
           {/* Navigation & User Info - Right Side */}

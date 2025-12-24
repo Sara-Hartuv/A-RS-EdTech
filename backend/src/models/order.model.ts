@@ -10,7 +10,7 @@ export interface IOrder extends Document {
   student: mongoose.Types.ObjectId;
   items: IOrderItem[];
   totalCost: number;
-  status: "draft" | "pendingApproval" | "approved" | "delivered"
+  status:  "newOrder" | "preparing" | "delivered"
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -65,8 +65,8 @@ const OrderSchema = new mongoose.Schema<IOrder>(
 
     status: {
       type: String,
-      enum: ["draft", "pendingApproval", "approved", "delivered"],
-      default: "draft"
+      enum: ["newOrder", "preparing", "delivered"],
+      default: "newOrder"
     }
   },
 

@@ -30,6 +30,7 @@ export const createWeeklyPointsLog = (data: {
   student: string;
   points: number;
   weekStartDate: string;
+  hasVoucher?: boolean;
 }) => {
   return api.post<WeeklyPointsLog>('/weekly-points-logs', data);
 };
@@ -37,7 +38,7 @@ export const createWeeklyPointsLog = (data: {
 /**
  * Update an existing weekly points log.
  */
-export const updateWeeklyPointsLog = (logId: string, data: { points: number }) => {
+export const updateWeeklyPointsLog = (logId: string, data: { points?: number; hasVoucher?: boolean }) => {
   return api.put<WeeklyPointsLog>(`/weekly-points-logs/${logId}`, data);
 };
 

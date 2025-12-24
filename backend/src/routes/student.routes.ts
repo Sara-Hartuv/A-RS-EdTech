@@ -6,6 +6,9 @@ const router = Router();
 
 router.use(authenticate);
 
+// Get my dashboard data (student only) - MUST BE BEFORE /:id route
+router.get('/me/dashboard', authorize('student'), studentController.getMyDashboardData);
+
 // צפייה בפרופיל תלמיד (פתוח למורה, אדמין ולתלמיד עצמו)
 router.get('/:id', authorize('teacher', 'admin', 'student'), studentController.getStudentProfile);
 

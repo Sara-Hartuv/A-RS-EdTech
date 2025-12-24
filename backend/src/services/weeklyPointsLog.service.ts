@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import * as weeklyPointsLogRepository from '../repositories/weeklyPointsLog.repository';
 import * as userRepository from '../repositories/user.repository';
 import * as studentRepository from '../repositories/student.repository';
+import * as voucherRepository from '../repositories/voucher.repository';
 
 export const getWeeklyPointsLogById = async (logId: string): Promise<IWeeklyPointsLog | null> => {
   if (!mongoose.Types.ObjectId.isValid(logId)) {
@@ -46,6 +47,7 @@ export const createWeeklyPointsLog = async (logData: {
   points: number;
   weekStartDate: Date;
   approvedBy: string;
+  hasVoucher?: boolean;
 }): Promise<IWeeklyPointsLog> => {
   if (!mongoose.Types.ObjectId.isValid(logData.student)) {
     throw new Error('Invalid student ID');
@@ -93,10 +95,21 @@ export const createWeeklyPointsLog = async (logData: {
     points: logData.points,
     weekStartDate: logData.weekStartDate,
     approvedBy: new mongoose.Types.ObjectId(logData.approvedBy),
+    hasVoucher: logData.hasVoucher || false,
   });
 
-  // Update user's weeklyPoints by adding points
-  await studentRepository.updateStudentWeeklyPoints(logData.student, logData.points);
+  // If hasVoucher is true, create voucher and increment count
+  if (logData.hasVoucher) {
+    await voucherRepository.createVoucher({
+      student: new mongoose.Types.ObjectId(logData.student),
+      issuedBy: new mongoose.Types.ObjectId(logData.approvedBy),
+      status: 'approved',
+      approvedBy: new mongoose.Types.ObjectId(logData.approvedBy),
+      approvedAt: new Date(),
+      order: null,
+    });
+    await studentRepository.incrementVouchersCount(logData.student, 1);
+  }
 
   return newLog;
 };
@@ -105,6 +118,7 @@ export const updateWeeklyPointsLog = async (
   logId: string,
   updateData: {
     points?: number;
+    hasVoucher?: boolean;
   }
 ): Promise<IWeeklyPointsLog | null> => {
   if (!mongoose.Types.ObjectId.isValid(logId)) {
@@ -118,19 +132,40 @@ export const updateWeeklyPointsLog = async (
   const existingLog = await weeklyPointsLogRepository.findWeeklyPointsLogById(logId);
   if (!existingLog) throw new Error('Weekly points log not found');
 
-  const oldPoints = existingLog.points;
+  // Handle voucher changes
+  if (updateData.hasVoucher !== undefined && updateData.hasVoucher !== existingLog.hasVoucher) {
+    const weekEndDate = new Date(existingLog.weekStartDate);
+    weekEndDate.setDate(weekEndDate.getDate() + 7);
+
+    if (updateData.hasVoucher === true && !existingLog.hasVoucher) {
+      // Teacher now grants voucher - create it
+      await voucherRepository.createVoucher({
+        student: existingLog.student,
+        issuedBy: existingLog.approvedBy,
+        status: 'approved',
+        approvedBy: existingLog.approvedBy,
+        approvedAt: new Date(),
+        order: null,
+      });
+      await studentRepository.incrementVouchersCount(existingLog.student.toString(), 1);
+    } else if (updateData.hasVoucher === false && existingLog.hasVoucher) {
+      // Teacher revokes voucher - delete it
+      const voucher = await voucherRepository.findVoucherByStudentAndWeek(
+        existingLog.student.toString(),
+        existingLog.weekStartDate,
+        weekEndDate
+      );
+      if (voucher && voucher._id) {
+        await voucherRepository.deleteVoucherById(voucher._id.toString());
+        await studentRepository.decrementVouchersCount(existingLog.student.toString(), 1);
+      }
+    }
+  }
+
   const updatedLog = await weeklyPointsLogRepository.updateWeeklyPointsLogById(logId, updateData);
 
   if (!updatedLog) {
     throw new Error('Weekly points log not found');
-  }
-
-  // If points changed, adjust user's weeklyPoints by the difference
-  if (updateData.points !== undefined) {
-    const delta = (updateData.points || 0) - oldPoints;
-    if (delta !== 0) {
-      await studentRepository.updateStudentWeeklyPoints(existingLog.student.toString(), delta);
-    }
   }
 
   return updatedLog;
@@ -147,12 +182,23 @@ export const deleteWeeklyPointsLog = async (logId: string): Promise<IWeeklyPoint
     throw new Error('Weekly points log not found');
   }
 
-  const deletedLog = await weeklyPointsLogRepository.deleteWeeklyPointsLogById(logId);
+  // If log has voucher, delete it and decrement count
+  if (log.hasVoucher) {
+    const weekEndDate = new Date(log.weekStartDate);
+    weekEndDate.setDate(weekEndDate.getDate() + 7);
 
-  if (deletedLog) {
-    // Subtract the points from the student's weeklyPoints
-    await studentRepository.updateStudentWeeklyPoints(deletedLog.student.toString(), -deletedLog.points);
+    const voucher = await voucherRepository.findVoucherByStudentAndWeek(
+      log.student.toString(),
+      log.weekStartDate,
+      weekEndDate
+    );
+    if (voucher && voucher._id) {
+      await voucherRepository.deleteVoucherById(voucher._id.toString());
+      await studentRepository.decrementVouchersCount(log.student.toString(), 1);
+    }
   }
+
+  const deletedLog = await weeklyPointsLogRepository.deleteWeeklyPointsLogById(logId);
 
   return deletedLog;
 };

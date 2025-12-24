@@ -61,7 +61,7 @@ export const createWeeklyPointsLog = async (req: Request, res: Response): Promis
       return;
     }
 
-    const { student, points, weekStartDate } = req.body;
+    const { student, points, weekStartDate, hasVoucher } = req.body;
 
     if (!student || points === undefined || !weekStartDate) {
       res.status(400).json({ message: 'Student, points, and week start date are required' });
@@ -73,6 +73,7 @@ export const createWeeklyPointsLog = async (req: Request, res: Response): Promis
       points,
       weekStartDate: new Date(weekStartDate),
       approvedBy: req.user.userId,
+      hasVoucher: hasVoucher || false,
     };
 
     const newLog = await weeklyPointsLogService.createWeeklyPointsLog(logData);
@@ -85,9 +86,11 @@ export const createWeeklyPointsLog = async (req: Request, res: Response): Promis
 export const updateWeeklyPointsLog = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    const { points } = req.body;
+    const { points, hasVoucher } = req.body;
 
-    const updateData = { points };
+    const updateData: { points?: number; hasVoucher?: boolean } = {};
+    if (points !== undefined) updateData.points = points;
+    if (hasVoucher !== undefined) updateData.hasVoucher = hasVoucher;
 
     const updatedLog = await weeklyPointsLogService.updateWeeklyPointsLog(id, updateData);
     res.status(200).json(updatedLog);

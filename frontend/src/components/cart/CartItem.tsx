@@ -1,7 +1,7 @@
 // src/components/cart/CartItem.tsx
 import React from 'react';
 import { Trash2, Minus, Plus } from 'lucide-react';
-import type { CartItem as CartItemType } from '../../store/useCartStore';
+import type { CartItem as CartItemType } from '../../store/CartStore';
 
 interface CartItemProps {
   item: CartItemType;
@@ -56,11 +56,11 @@ export const CartItem: React.FC<CartItemProps> = ({
         )}
         <div className="flex items-center gap-2 mt-2">
           <span className="text-sm font-medium text-blue-600">
-            {product.costInVouchers} vouchers
+            {product.costInVouchers} שוברים
           </span>
           <span className="text-xs text-gray-400">•</span>
           <span className="text-xs text-gray-500">
-            {product.stock} in stock
+            {product.stock} במלאי
           </span>
         </div>
       </div>
@@ -94,7 +94,7 @@ export const CartItem: React.FC<CartItemProps> = ({
           <p className="text-sm font-semibold text-gray-900">
             {subtotal}
           </p>
-          <p className="text-xs text-gray-500">vouchers</p>
+          <p className="text-xs text-gray-500">שוברים</p>
         </div>
 
         {/* Remove Button */}

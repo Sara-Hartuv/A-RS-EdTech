@@ -5,6 +5,7 @@ export interface IWeeklyPointsLog extends Document {
   points: number;
   weekStartDate: Date;
   approvedBy: mongoose.Types.ObjectId;
+  hasVoucher: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -31,6 +32,10 @@ const weeklyPointsLogSchema = new Schema<IWeeklyPointsLog>(
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: [true, 'Approver is required'],
+    },
+    hasVoucher: {
+      type: Boolean,
+      default: false,
     },
   },
   {

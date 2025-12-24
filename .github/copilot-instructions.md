@@ -25,7 +25,7 @@ Achievement/reward system for educational institutions. Students earn points/vou
 ## Domain Models
 - **User**: Roles (`student`/`teacher`/`admin`), `students: ObjectId[]`, `points`/`vouchers`/`bubbleVouchers`, soft delete via `status`
 - **Product**: `category: ObjectId`, `costInVouchers`, `stock`, `purchasesCount`, soft delete via `isActive`
-- **Order**: Status flow `draft` → `pendingApproval` → `approved` → `delivered`
+- **Order**: Status flow `newOrder` → `preparing` → `delivered`
 - **Idea**: Student suggestions, status `pending` → `reviewed` → `approved/rejected`, `seen` flag
 
 ## Dev Commands

@@ -2,14 +2,17 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingCart, ArrowRight } from 'lucide-react';
-import { useCartStore } from '../store/useCartStore';
+import { useCartStore } from '../store/CartStore';
 import { CartItem } from '../components/cart/CartItem';
 import { CartSummary } from '../components/cart/CartSummary';
 
 export const CartPage: React.FC = () => {
   const navigate = useNavigate();
-  const { items, updateQuantity, removeItem, clearCart, totalItems, totalPrice } =
+  const { items, updateQuantity, removeItem, clearCart, getTotalItems, getTotalPrice } =
     useCartStore();
+  
+  const totalItems = getTotalItems();
+  const totalPrice = getTotalPrice();
 
   const handleCheckoutSuccess = () => {
     clearCart();

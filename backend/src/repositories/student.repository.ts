@@ -30,18 +30,6 @@ export const updateStudentById = async (
 };
 
 
-export const updateStudentWeeklyPoints = async (
-  studentId: string,
-  points: number
-): Promise<IStudent | null> => {
-  return await Student.findByIdAndUpdate(
-    studentId,
-    { $inc: { currentWeeklyPoints: points } },
-    { new: true }
-  ).exec();
-};
-
-
 export const updateStudentVouchers = async (
   studentId: string,
   count: number
@@ -62,6 +50,28 @@ export const updateStudentExcellenceVouchers = async (
   return await Student.findByIdAndUpdate(
     studentId,
     { $inc: { currentVouchersCount: amount } }, 
+    { new: true, runValidators: true }
+  ).exec();
+};
+
+export const incrementVouchersCount = async (
+  studentId: string,
+  amount: number
+): Promise<IStudent | null> => {
+  return await Student.findByIdAndUpdate(
+    studentId,
+    { $inc: { currentVouchersCount: amount } },
+    { new: true, runValidators: true }
+  ).exec();
+};
+
+export const decrementVouchersCount = async (
+  studentId: string,
+  amount: number
+): Promise<IStudent | null> => {
+  return await Student.findByIdAndUpdate(
+    studentId,
+    { $inc: { currentVouchersCount: -amount } },
     { new: true, runValidators: true }
   ).exec();
 };

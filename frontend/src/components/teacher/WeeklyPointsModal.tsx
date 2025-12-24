@@ -4,9 +4,10 @@ import { useState, useEffect } from 'react';
 interface WeeklyPointsModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (points: number) => Promise<void>;
+  onSubmit: (points: number, hasVoucher: boolean) => Promise<void>;
   studentName: string;
   existingPoints?: number;
+  existingHasVoucher?: boolean;
 }
 
 export default function WeeklyPointsModal({
@@ -15,16 +16,19 @@ export default function WeeklyPointsModal({
   onSubmit,
   studentName,
   existingPoints,
+  existingHasVoucher,
 }: WeeklyPointsModalProps) {
   const [points, setPoints] = useState<string>('');
+  const [hasVoucher, setHasVoucher] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Reset points when modal opens with existing points
+  // Reset points and voucher when modal opens with existing data
   useEffect(() => {
     if (isOpen) {
       setPoints(existingPoints !== undefined ? existingPoints.toString() : '');
+      setHasVoucher(existingHasVoucher ?? false);
     }
-  }, [isOpen, existingPoints]);
+  }, [isOpen, existingPoints, existingHasVoucher]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,7 +41,7 @@ export default function WeeklyPointsModal({
 
     setIsSubmitting(true);
     try {
-      await onSubmit(pointsNumber);
+      await onSubmit(pointsNumber, hasVoucher);
     } finally {
       setIsSubmitting(false);
     }
@@ -111,6 +115,26 @@ export default function WeeklyPointsModal({
                 </button>
               ))}
             </div>
+          </div>
+
+          {/* Voucher Checkbox */}
+          <div className="mb-6">
+            <label className="flex items-center gap-3 p-4 bg-emerald-50 border border-emerald-200 rounded-xl cursor-pointer hover:bg-emerald-100 transition-colors">
+              <input
+                type="checkbox"
+                checked={hasVoucher}
+                onChange={(e) => setHasVoucher(e.target.checked)}
+                className="w-5 h-5 text-emerald-600 rounded focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+              />
+              <div>
+                <span className="text-sm font-semibold text-emerald-900 block">
+                  התלמידה זכאית לשובר השבוע
+                </span>
+                <span className="text-xs text-emerald-700">
+                  השובר יתווסף אוטומטית לחשבון התלמידה
+                </span>
+              </div>
+            </label>
           </div>
 
           {/* Actions */}

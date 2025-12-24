@@ -8,8 +8,10 @@ export interface User {
   phone: string;
   role: UserRole;
   email?: string;
-  weeklyPoints?: number;
-  excellenceVouchers?: number;
-  bubbleVouchers?: number;
+  currentVouchersCount?: number;
+  excellanceCetificatesCount?: number;
   createdAt?: string;
+  updatedAt?: string;
 }
+
+//צריך להוסיף אימייל והאם קיבלה שובר השבוע 

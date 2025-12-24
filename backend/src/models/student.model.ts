@@ -7,8 +7,8 @@ import User, { IUser } from './user.model'; // import base User model
  */
 export interface IStudent extends IUser {
   currentVouchersCount?: number;
-  currentWeeklyPoints?: number;
   excellenceCertificatesCount?: number;
+  
 }
 
 /**
@@ -17,7 +17,6 @@ export interface IStudent extends IUser {
 const StudentSchema = new mongoose.Schema<IStudent>(
   {
     currentVouchersCount: { type: Number, default: 0 },
-    currentWeeklyPoints: { type: Number, default: 0 },
     excellenceCertificatesCount: { type: Number, default: 0 },
   },
   { _id: false } // do not create a new _id; use the base User's _id
