@@ -1,91 +1,111 @@
-import { Check, X, Award, MapPin } from 'lucide-react';
+import { Check, X, Award, Rocket } from 'lucide-react';
 
 type Props = {
   history: Array<boolean | null>;
 };
 
 export default function StudentRoadmap({ history }: Props) {
-  // Ensure we always have 10 weeks
   const weeksData = history;
   const currentIndex = weeksData.findIndex((v) => v === null);
   const completedWeeks = weeksData.filter((v) => v === true).length;
+  const totalWeeks = weeksData.length;
+  const progressPercent = (completedWeeks / totalWeeks) * 100;
 
   return (
-    <div className="bg-white rounded-3xl shadow-lg p-6">
-      <h3 className="font-bold text-2xl text-slate-800 mb-6 text-center">מפת הדרך לתעודת ההצטיינות</h3>
+    <div className="relative bg-gradient-to-br from-neutral-50 via-primary-50/30 to-accent-50/30 rounded-[2rem] p-8 overflow-hidden">
+      {/* Decorative elements */}
+      <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary-400 via-accent-400 to-primary-400" />
       
-      <div className="mt-6 flex items-center overflow-x-auto py-4 px-2">
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h3 className="font-black text-2xl text-neutral-800">המסע לתעודת הצטיינות</h3>
+          <p className="text-neutral-500 text-sm mt-1">כל שבוע מוצלח מקרב אותך למטרה!</p>
+        </div>
+        <div className="flex items-center gap-3 bg-white rounded-2xl px-4 py-2 shadow-md">
+          <Rocket className="w-5 h-5 text-accent-500" />
+          <span className="font-bold text-neutral-700">{completedWeeks}/{totalWeeks}</span>
+        </div>
+      </div>
+
+      {/* Progress bar */}
+      <div className="mb-8">
+        <div className="bg-neutral-200 rounded-full h-4 overflow-hidden shadow-inner">
+          <div 
+            className="h-full bg-gradient-to-r from-primary-400 via-primary-500 to-accent-500 rounded-full transition-all duration-1000 ease-out relative"
+            style={{ width: `${progressPercent}%` }}
+          >
+            <div className="absolute inset-0 bg-white/20 animate-pulse" />
+          </div>
+        </div>
+      </div>
+      
+      {/* Weeks timeline */}
+      <div className="flex items-center justify-between gap-2 overflow-x-auto py-4">
         {weeksData.map((weekStatus, i) => {
-          const isCurrent = i === currentIndex || (currentIndex === -1 && i === weeksData.length - 1);
-          const isLastWeek = i === weeksData.length - 1;
+          const isCurrent = i === currentIndex;
+          const isPast = weekStatus !== null;
 
           return (
-            <div key={i} className="flex items-center">
-              <div className="flex flex-col items-center min-w-[72px] relative">
-                {/* Current week indicator */}
-                {isCurrent && weekStatus !== false && (
-                  <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 z-20">
-                    <div className="inline-flex items-center gap-2 bg-sky-500 text-white px-3 py-0.5 rounded-full shadow-md whitespace-nowrap">
-                      <MapPin className="w-5 h-5" />
-                      <span className="text-xs font-semibold">את כאן</span>
-                    </div>
-                  </div>
+            <div key={i} className="flex flex-col items-center flex-1 min-w-[60px]">
+              {/* Status indicator */}
+              <div
+                className={`relative w-12 h-12 flex items-center justify-center rounded-xl transition-all duration-300 ${
+                  weekStatus === true
+                    ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-200'
+                    : weekStatus === false
+                    ? 'bg-red-400 text-white shadow-lg shadow-red-200'
+                    : isCurrent
+                    ? 'bg-primary-500 text-white shadow-lg shadow-primary-200 ring-4 ring-primary-200 scale-110'
+                    : 'bg-neutral-200 text-neutral-400'
+                }`}
+              >
+                {weekStatus === true ? (
+                  <Check className="w-6 h-6" strokeWidth={3} />
+                ) : weekStatus === false ? (
+                  <X className="w-6 h-6" strokeWidth={3} />
+                ) : (
+                  <span className="text-sm font-bold">{i + 1}</span>
                 )}
                 
-                <div
-                  className={`w-14 h-14 flex items-center justify-center rounded-full shadow-lg transition-all ${
-                    weekStatus === true
-                      ? 'bg-emerald-500 text-white'
-                      : weekStatus === false
-                      ? 'bg-red-500 text-white'
-                      : isCurrent
-                      ? 'bg-emerald-500 text-white ring-4 ring-emerald-200 scale-110'
-                      : 'bg-slate-200 text-slate-400 border-2 border-slate-300'
-                  }`}
-                >
-                  {weekStatus === true ? (
-                    <Check className="w-7 h-7" strokeWidth={3} />
-                  ) : weekStatus === false ? (
-                    <X className="w-7 h-7" strokeWidth={3} />
-                  ) : (
-                    <div className="text-xl font-bold">○</div>
-                  )}
-                </div>
-                
-                <div className="mt-2 text-sm font-semibold text-slate-700">שבוע {i + 1}</div>
+                {/* Current indicator pulse */}
+                {isCurrent && (
+                  <div className="absolute -inset-1 bg-primary-400 rounded-xl opacity-30 animate-ping" />
+                )}
               </div>
-
-              {/* Connecting line between weeks */}
-              {!isLastWeek && (
-                <div
-                  className={`h-1.5 w-10 mx-1 rounded-full transition-colors ${
-                    weekStatus === true ? 'bg-emerald-500' : 'bg-slate-200'
-                  }`}
-                />
-              )}
+              
+              {/* Week label */}
+              <span className={`mt-2 text-xs font-semibold ${
+                isPast ? 'text-neutral-600' : 'text-neutral-400'
+              }`}>
+                ש׳{i + 1}
+              </span>
             </div>
           );
         })}
 
-        {/* Line connecting last week to certificate */}
-        <div
-          className={`h-1.5 w-10 mx-1 rounded-full transition-colors ${
-            weeksData[9] === true ? 'bg-emerald-500' : 'bg-slate-200'
-          }`}
-        />
-
-        {/* Excellence Certificate goal */}
-        <div className="flex flex-col items-center min-w-[100px]">
-          <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-300 to-amber-500 flex items-center justify-center shadow-xl transform hover:scale-105 transition-transform">
-            <Award className="text-white w-11 h-11" strokeWidth={2.5} />
+        {/* Certificate Goal */}
+        <div className="flex flex-col items-center min-w-[80px] mr-2">
+          <div className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-300 ${
+            completedWeeks === totalWeeks
+              ? 'bg-gradient-to-br from-amber-400 to-accent-500 shadow-xl shadow-accent-200 scale-110'
+              : 'bg-gradient-to-br from-neutral-300 to-neutral-400'
+          }`}>
+            <Award className={`w-9 h-9 ${completedWeeks === totalWeeks ? 'text-white' : 'text-neutral-500'}`} strokeWidth={2} />
           </div>
-          <div className="mt-2 text-sm font-bold text-amber-600 text-center">תעודת<br/>הצטיינות!</div>
+          <span className="mt-2 text-xs font-bold text-accent-600">🏆 תעודה!</span>
         </div>
       </div>
 
-      <p className="mt-6 text-center text-slate-600 font-medium">
-        השלמת <span className="font-bold text-emerald-600">{completedWeeks}</span> שבועות מתוך 5
-      </p>
+      {/* Motivational message */}
+      <div className="mt-6 text-center">
+        {completedWeeks === totalWeeks ? (
+          <p className="text-lg font-bold text-accent-600">🎉 מדהים! השלמת את כל השבועות!</p>
+        ) : completedWeeks >= totalWeeks / 2 ? (
+          <p className="text-lg font-bold text-primary-600">💪 יופי! עברת את חצי הדרך!</p>
+        ) : (
+          <p className="text-lg font-bold text-neutral-600">🚀 המשיכי כך, את בדרך הנכונה! עוד 3 שוברים ויש לך תעודה</p>
+        )}
+      </div>
     </div>
   );
 }

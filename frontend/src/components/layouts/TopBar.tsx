@@ -17,7 +17,7 @@ export default function TopBar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 shadow-sm border-b border-blue-100">
+    <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 shadow-sm border-b border-primary-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-24 py-2">
           {/* Logo - Left Side */}
@@ -27,7 +27,7 @@ export default function TopBar() {
               alt="מייתרים - תוכנית עיצוב התנהגות" 
               className="h-32 w-auto -mt-10 object-contain transition-transform group-hover:scale-105"
             />
-            <p className="text-[10px] text-slate-600 font-medium -mt-6">תוכנית עיצוב התנהגות</p>
+            <p className="text-[10px] text-neutral-600 font-medium -mt-6">תוכנית עיצוב התנהגות</p>
           </Link>
 
           {/* Navigation & User Info - Right Side */}
@@ -42,8 +42,8 @@ export default function TopBar() {
                       className={({ isActive }) =>
                         `flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
                           isActive
-                            ? "bg-blue-50 text-blue-700 shadow-sm"
-                            : "text-slate-600 hover:bg-blue-50 hover:text-blue-600"
+                            ? "bg-primary-50 text-primary-700 shadow-sm"
+                            : "text-neutral-600 hover:bg-primary-50 hover:text-primary-600"
                         }`
                       }
                     >
@@ -56,8 +56,8 @@ export default function TopBar() {
                       className={({ isActive }) =>
                         `flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
                           isActive
-                            ? "bg-blue-50 text-blue-700 shadow-sm"
-                            : "text-slate-600 hover:bg-blue-50 hover:text-blue-600"
+                            ? "bg-primary-50 text-primary-700 shadow-sm"
+                            : "text-neutral-600 hover:bg-primary-50 hover:text-primary-600"
                         }`
                       }
                     >
@@ -70,8 +70,8 @@ export default function TopBar() {
                       className={({ isActive }) =>
                         `flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
                           isActive
-                            ? "bg-blue-50 text-blue-700 shadow-sm"
-                            : "text-slate-600 hover:bg-blue-50 hover:text-blue-600"
+                            ? "bg-primary-50 text-primary-700 shadow-sm"
+                            : "text-neutral-600 hover:bg-primary-50 hover:text-primary-600"
                         }`
                       }
                     >
@@ -89,8 +89,8 @@ export default function TopBar() {
                       className={({ isActive }) =>
                         `flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
                           isActive
-                            ? "bg-blue-50 text-blue-700 shadow-sm"
-                            : "text-slate-600 hover:bg-blue-50 hover:text-blue-600"
+                            ? "bg-primary-50 text-primary-700 shadow-sm"
+                            : "text-neutral-600 hover:bg-primary-50 hover:text-primary-600"
                         }`
                       }
                     >
@@ -102,8 +102,8 @@ export default function TopBar() {
                       className={({ isActive }) =>
                         `flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
                           isActive
-                            ? "bg-blue-50 text-blue-700 shadow-sm"
-                            : "text-slate-600 hover:bg-blue-50 hover:text-blue-600"
+                            ? "bg-primary-50 text-primary-700 shadow-sm"
+                            : "text-neutral-600 hover:bg-primary-50 hover:text-primary-600"
                         }`
                       }
                     >
@@ -113,19 +113,19 @@ export default function TopBar() {
                 )}
 
                 {/* User Greeting & Logout */}
-                <div className="flex items-center gap-3 border-r border-slate-200 pr-4">
+                <div className="flex items-center gap-3 border-r border-neutral-200 pr-4">
                   <div className="text-right">
-                    <p className="text-sm font-medium text-slate-700">
+                    <p className="text-sm font-medium text-neutral-700">
                       שלום ל{user?.name}! 👋
                     </p>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-neutral-500">
                       {user?.role === 'student' ? 'תלמיד/ה' : user?.role === 'teacher' ? 'מורה' : 'מנהל/ת'}
                     </p>
                   </div>
                   
                   <button
                     onClick={handleLogout}
-                    className="p-2 rounded-lg text-slate-600 hover:bg-red-50 hover:text-red-600 transition-all"
+                    className="p-2 rounded-lg text-neutral-600 hover:bg-accent-50 hover:text-accent-600 transition-all"
                     title="יציאה"
                   >
                     <LogOut className="w-5 h-5" />
@@ -140,8 +140,8 @@ export default function TopBar() {
                 className={({ isActive }) =>
                   `px-5 py-2 rounded-lg font-medium transition-all ${
                     isActive
-                      ? "bg-blue-600 text-white shadow-md"
-                      : "bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white"
+                      ? "bg-primary-600 text-white shadow-md"
+                      : "bg-primary-50 text-primary-600 hover:bg-primary-600 hover:text-white"
                   }`
                 }
               >
@@ -153,13 +153,13 @@ export default function TopBar() {
 
         {/* Mobile Navigation */}
         {isAuthenticated && user?.role === 'student' && (
-          <div className="md:hidden border-t border-slate-200 py-2" dir="rtl">
+          <div className="md:hidden border-t border-neutral-200 py-2" dir="rtl">
             <nav className="flex justify-around">
               <NavLink
                 to="/products"
                 className={({ isActive }) =>
                   `flex flex-col items-center gap-1 px-3 py-2 rounded-lg ${
-                    isActive ? "text-blue-700" : "text-slate-600"
+                    isActive ? "text-primary-700" : "text-neutral-600"
                   }`
                 }
               >
@@ -171,7 +171,7 @@ export default function TopBar() {
                 to="/cart"
                 className={({ isActive }) =>
                   `flex flex-col items-center gap-1 px-3 py-2 rounded-lg ${
-                    isActive ? "text-blue-700" : "text-slate-600"
+                    isActive ? "text-primary-700" : "text-neutral-600"
                   }`
                 }
               >
@@ -183,7 +183,7 @@ export default function TopBar() {
                 to="/student"
                 className={({ isActive }) =>
                   `flex flex-col items-center gap-1 px-3 py-2 rounded-lg ${
-                    isActive ? "text-blue-700" : "text-slate-600"
+                    isActive ? "text-primary-700" : "text-neutral-600"
                   }`
                 }
               >

@@ -4,7 +4,6 @@ import { authenticate, authorize } from '../middlewares/auth.middleware';
 
 const router = Router();
 
-// Get all weekly points logs (admin/teacher only)
 router.get(
   '/',
   authenticate,
@@ -12,7 +11,6 @@ router.get(
   weeklyPointsLogController.getAllWeeklyPointsLogs
 );
 
-// Get weekly points log by ID (admin/teacher only)
 router.get(
   '/:id',
   authenticate,
@@ -20,7 +18,6 @@ router.get(
   weeklyPointsLogController.getWeeklyPointsLogById
 );
 
-// Get weekly points logs by student ID (admin/teacher only)
 router.get(
   '/student/:studentId',
   authenticate,
@@ -28,7 +25,6 @@ router.get(
   weeklyPointsLogController.getWeeklyPointsLogsByStudent
 );
 
-// Get current week points for a student (admin/teacher only)
 router.get(
   '/student/:studentId/current-week',
   authenticate,
@@ -36,7 +32,6 @@ router.get(
   weeklyPointsLogController.getCurrentWeekPointsForStudent
 );
 
-// Check if student has current week points (admin/teacher only)
 router.get(
   '/student/:studentId/has-current-week',
   authenticate,
@@ -44,7 +39,6 @@ router.get(
   weeklyPointsLogController.hasCurrentWeekPoints
 );
 
-// Get weekly points logs by approver ID (admin/teacher only)
 router.get(
   '/approver/:approverId',
   authenticate,
@@ -52,7 +46,6 @@ router.get(
   weeklyPointsLogController.getWeeklyPointsLogsByApprover
 );
 
-// Get my weekly points logs as a student
 router.get(
   '/my/logs',
   authenticate,
@@ -60,7 +53,6 @@ router.get(
   weeklyPointsLogController.getMyWeeklyPointsLogs
 );
 
-// Create new weekly points log (teacher/admin only)
 router.post(
   '/',
   authenticate,
@@ -68,7 +60,6 @@ router.post(
   weeklyPointsLogController.createWeeklyPointsLog
 );
 
-// Update weekly points log (teacher/admin only)
 router.put(
   '/:id',
   authenticate,
@@ -76,7 +67,6 @@ router.put(
   weeklyPointsLogController.updateWeeklyPointsLog
 );
 
-// Delete weekly points log (admin only)
 router.delete(
   '/:id',
   authenticate,

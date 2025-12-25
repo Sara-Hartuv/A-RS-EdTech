@@ -60,7 +60,7 @@ export default function WeeklyPointsModal({
       {/* Modal */}
       <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 overflow-hidden">
         {/* Header */}
-        <div className="bg-gradient-to-l from-blue-600 to-blue-700 px-6 py-4 text-white">
+        <div className="bg-gradient-to-l from-primary-600 to-primary-700 px-6 py-4 text-white">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold">
               {existingPoints !== undefined ? 'עריכת ניקוד שבועי' : 'הכנסת ניקוד שבועי'}
@@ -74,13 +74,13 @@ export default function WeeklyPointsModal({
               </svg>
             </button>
           </div>
-          <p className="text-blue-100 text-sm mt-1">{studentName}</p>
+          <p className="text-primary-100 text-sm mt-1">{studentName}</p>
         </div>
 
         {/* Content */}
         <form onSubmit={handleSubmit} className="p-6">
           <div className="mb-6">
-            <label htmlFor="points" className="block text-sm font-medium text-slate-700 mb-2">
+            <label htmlFor="points" className="block text-sm font-medium text-neutral-700 mb-2">
               מספר הנקודות
             </label>
             <input
@@ -89,7 +89,7 @@ export default function WeeklyPointsModal({
               min="0"
               value={points}
               onChange={(e) => setPoints(e.target.value)}
-              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg text-center font-semibold"
+              className="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-lg text-center font-semibold"
               placeholder="הזיני מספר נקודות"
               autoFocus
               required
@@ -98,7 +98,7 @@ export default function WeeklyPointsModal({
 
           {/* Quick Points Buttons */}
           <div className="mb-6">
-            <p className="text-xs text-slate-500 mb-2">בחירה מהירה:</p>
+            <p className="text-xs text-neutral-500 mb-2">בחירה מהירה:</p>
             <div className="flex flex-wrap gap-2">
               {[150,200,250,300,350,400].map((num) => (
                 <button
@@ -119,12 +119,12 @@ export default function WeeklyPointsModal({
 
           {/* Voucher Checkbox */}
           <div className="mb-6">
-            <label className="flex items-center gap-3 p-4 bg-emerald-50 border border-emerald-200 rounded-xl cursor-pointer hover:bg-emerald-100 transition-colors">
+            <label className="flex items-center gap-3 p-4 bg-primary-50 border border-primary-200 rounded-xl cursor-pointer hover:bg-primary-100 transition-colors">
               <input
                 type="checkbox"
                 checked={hasVoucher}
                 onChange={(e) => setHasVoucher(e.target.checked)}
-                className="w-5 h-5 text-emerald-600 rounded focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+                className="w-5 h-5 text-primary-600 rounded focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
               />
               <div>
                 <span className="text-sm font-semibold text-emerald-900 block">

@@ -21,13 +21,13 @@ export const CartPage: React.FC = () => {
   // Empty Cart State
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 py-8 px-4">
+      <div className="min-h-screen bg-neutral-50 py-8 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-2xl shadow-sm p-12 text-center">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-gray-100 rounded-full mb-6">
-              <ShoppingCart size={40} className="text-gray-400" />
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-neutral-100 rounded-full mb-6">
+              <ShoppingCart size={40} className="text-neutral-400" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            <h2 className="text-2xl font-bold text-neutral-900 mb-2">
               העגלה שלך ריקה
             </h2>
             <p className="text-gray-500 mb-8">
@@ -83,7 +83,7 @@ export const CartPage: React.FC = () => {
                     clearCart();
                   }
                 }}
-                className="text-sm text-gray-500 hover:text-red-600 transition-colors"
+                className="text-sm text-neutral-500 hover:text-accent-600 transition-colors"
               >
                 נקה עגלה
               </button>
@@ -105,7 +105,7 @@ export const CartPage: React.FC = () => {
         <div className="mt-8 text-center">
           <button
             onClick={() => navigate('/products')}
-            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium transition-colors"
+            className="inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 font-medium transition-colors"
           >
             <ArrowRight size={18} className="rotate-180" />
             המשך בקניה
