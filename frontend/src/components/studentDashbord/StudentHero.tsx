@@ -76,7 +76,7 @@ export default function StudentHero({ student }: Props) {
                   style={{ width: `${progressPercent}%` }}
                 />
               </div>
-              <p className="text-xs mt-2 opacity-75">{points} מתוך {maxPoints} נקודות</p>
+              {/* <p className="text-xs mt-2 opacity-75">{points} מתוך {maxPoints} נקודות</p> */}
             </div>
             
             {/* Floating stars animation */}
