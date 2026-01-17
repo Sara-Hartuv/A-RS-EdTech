@@ -21,6 +21,15 @@ export default function ProtectedRoute({
   const token = useAuthStore((s) => s.token);
   const isLoading = useAuthStore((s) => s.isLoading);
 
+  console.log('[ProtectedRoute]', {
+  isLoading,
+  user,
+  token,
+  role: user?.role,
+  allowedRoles
+});
+
+
   // While auth is initializing, don't redirect — allow initAuth to complete
   if (isLoading) return null;
 

@@ -103,7 +103,7 @@ export default function StudentRoadmap({ history }: Props) {
         ) : completedWeeks >= totalWeeks / 2 ? (
           <p className="text-lg font-bold text-primary-600">💪 יופי! עברת את חצי הדרך!</p>
         ) : (
-          <p className="text-lg font-bold text-neutral-600">🚀 המשיכי כך, את בדרך הנכונה! עוד 3 שוברים ויש לך תעודה</p>
+          <p className="text-lg font-bold text-neutral-600">🚀 המשיכי כך, את בדרך הנכונה! עוד 3 שוברים ויש לך הצטיינות</p>
         )}
       </div>
     </div>

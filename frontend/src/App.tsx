@@ -8,9 +8,13 @@ import TeacherDashboardPage from "./pages/TeacherDashboardPage";
 import ProductsPage from "./pages/ProductsPage";
 import { CartPage } from "./pages/CartPage";
 import { useAuthStore } from "./store/authStore";
+import { IS_COMPETITION_MODE } from "./config/competition";
+import StudentProcessHome from "./pages/student/StudentProcessHome";
+
 
 function App() {
   const isAuthenticated = useAuthStore((s) => !!s.user && !!s.token);
+  console.log('IS_COMPETITION_MODE in App:', IS_COMPETITION_MODE);
 
   return (
     <MainLayout>
@@ -31,6 +35,15 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        {/* תחרות חולמים חכם */}
+         <Route
+            path="/process"
+            element={
+                <StudentProcessHome />
+            }
+          />
+        {/* תחרות חולמים חכם */}
 
         {/* Protected Routes - Teacher & Admin */}
         <Route
